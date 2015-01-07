@@ -1,0 +1,38 @@
+<launch>
+   <node pkg="nodelet" type="nodelet" name="Image_nodelet" args="load ladybug/Image_nodelet nodelet_manager" output="screen" />
+    
+   <node pkg="nodelet" type="nodelet" name="Rectifier_nodelet_cam4" args="load ladybug/Rectifier_nodelet nodelet_manager" output="screen">
+  	<param name="sub" 	value="/ladybug5/camera4/image_raw" />
+  	<param name="pub" 	value="/ladybug5/camera4/image_color_rect" />
+  	<param name="lut" 	value="$(find ladybug)/calibration/13122828_camera4_h1024_w1224_map_" />
+  	<param name="sub_info" 	value="/ladybug5/camera4/camera_info" />
+  	<param name="zoom" 	value="2.2" />
+  </node>
+  
+  <node pkg="nodelet" type="nodelet" name="image_enhancement_4blur" args="load image_cloud/Blur nodelet_manager" output="screen">
+  	<param name="subscribe_topic" type="string" value="/ladybug5/camera4/image_color_rect" />
+  	<param name="publish_topic" type="string" value="/ladybug5/camera4/image_color_rect_blur" />
+  	<param name="filter"  type="int" value="2" />
+  	<param name="kernel"  type="int" value="13" />
+  </node>
+  
+  <node pkg="nodelet" type="nodelet" name="dilate_first" args="load image_cloud/Dilate nodelet_manager" output="screen">
+  	<param name="subscribe_topic" 	value="/ladybug5/camera4/image_color_rect_blur" />
+  	<param name="publish_topic" 	value="/ladybug5/camera4/image_color_rect_dilate" />
+  </node>
+  
+  <node pkg="nodelet" type="nodelet" name="erode_first" args="load image_cloud/Erode nodelet_manager" output="screen">
+  	<param name="subscribe_topic" 	value="/ladybug5/camera4/image_color_rect_dilate" />
+  	<param name="publish_topic" 	value="/ladybug5/camera4/image_color_rect_dilate_erode" />
+  </node>
+  
+  <node pkg="nodelet" type="nodelet" name="image_enhancement_4edge" args="load image_cloud/Edge_detector_nodelet nodelet_manager" output="screen">
+	<param name="subscribe_topic" type="string" value="/ladybug5/camera4/image_color_rect_blur" />
+	<param name="publish_topic" type="string" value="/ladybug5/camera4/image_color_rect_edge" />
+	<param name="kernel_size"  	  type="int" value="5" />
+	<param name="threshold1"  type="int" value="50" />
+	<param name="threshold2"  type="int" value="200" />
+	<param name="color"  	  type="bool" value="true" />
+  </node>
+               
+</launch>

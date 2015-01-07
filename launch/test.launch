@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<launch>
+   <include file="$(find barney)/launch/description.launch" />
+    <!-- Vision -->
+   <include file="$(find ladybug)/launch/nodelet.launch"/>
+    
+    <!-- start filter -->  
+    <include file="$(find cloud_aggregator)/launch/aggregator.launch" />
+    
+    <!--include file="$(find pcl_filter)/launch/filter.launch" /-->
+</launch>

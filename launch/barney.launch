@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<launch>
+   <!-- imu spams a lot.. start it first -->
+   <include file="$(find barney)/launch/imu.launch" />
+	
+   <!-- get static transforms -->
+   <include file="$(find barney)/launch/transforms.launch" />
+   <include file="$(find barney)/launch/description.launch" />
+
+   <!-- start hardware -->
+   <include file="$(find barney)/launch/husky_base.launch" />
+   <include file="$(find barney)/launch/tilt_unit.launch" />
+
+   <include file="$(find barney)/launch/velodyne_pcl.launch" />
+   <include file="$(find barney)/launch/hokuyo.launch" />
+    
+    <!-- Vision -->
+   <include file="$(find ladybug)/launch/nodelet.launch"/>
+    
+    <!-- start filter -->
+   <include file="$(find barney)/launch/ekf.launch" />
+   <include file="$(find cloud_aggregator)/launch/aggregator.launch" />
+   <!--include file="$(find pcl_filter)/launch/filter.launch" /-->
+
+    <!-- start controlling -->
+   <node pkg="barney" type="skill_controller.py" name="SKILL_controller" />
+   <include file="$(find joy_rumble)/launch/rumble.launch" />
+
+
+   <!-- start stuff for demonstration (not important for executing) -->
+   <node pkg="maskor_common" type="pose_to_odom" name="pose_to_odom" />
+</launch>

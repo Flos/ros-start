@@ -1,0 +1,11 @@
+<launch>
+	<arg name="remap" default="0" />
+	<node pkg="tf" type="tf_remap" name="tf_remapper" output="screen" >
+        <rosparam param="mappings" if="$(arg remap)"  >        
+        - {old: "robot_pose_ekf", new: "robot_pose_ekf_old"}
+        - {old: "base_footprint", new: "base_footprint_old"}
+        - {old: "odom_combined", new: "odom_combined_old"}
+        </rosparam>
+	</node>
+	
+</launch>

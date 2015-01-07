@@ -1,0 +1,5 @@
+<launch>
+  <node pkg="nodelet" type="nodelet" name="nodelet_manager"  args="manager" output="screen">
+  	<param name="num_worker_threads" type="int" value="16" />
+  </node> 
+</launch>
