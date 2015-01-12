@@ -1,5 +1,7 @@
 <launch>
-  <node pkg="nodelet" type="nodelet" name="nodelet_manager"  args="manager" output="screen">
-  	<param name="num_worker_threads" type="int" value="16" />
-  </node> 
+	<arg name="name" 				default="nodelet_manager" />
+	<arg name="threads" 			default="8" />
+	<node pkg="nodelet" type="nodelet" name="$(arg name)"  args="manager">
+	  	<param name="num_worker_threads" type="int" value="$(arg threads)" />
+	</node> 
 </launch>

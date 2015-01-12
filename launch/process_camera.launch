@@ -1,0 +1,42 @@
+<launch>
+   <arg name="camera" 			default="4" />
+   <arg name="nodelet_manager" 	default="nodelet_manager" />
+   
+   <group ns="/ladybug/camera$(arg camera)">
+   
+	   <node pkg="nodelet" type="nodelet" name="camera$(arg camera)_Rectifier_nodelet" args="load ladybug/Rectifier_nodelet $(arg nodelet_manager)" output="screen">
+	  	<param name="sub" 	value="/ladybug5/camera$(arg camera)/image_raw" />
+	  	<param name="pub" 	value="/ladybug5/camera$(arg camera)/image_color_rect" />
+	  	<param name="sub_info" 	value="/ladybug5/camera$(arg camera)/camera_info" />
+	  	<param name="lut" 	value="$(find ladybug)/calibration/13122828_camera$(arg camera)_h1024_w1224_map_" />
+	  	<param name="zoom" 	value="2.2" />
+	  </node>
+	  
+	  <node pkg="nodelet" type="nodelet" name="camera$(arg camera)_image_enhancement_blur" args="load image_cloud/Blur $(arg nodelet_manager)" output="screen">
+	  	<param name="subscribe_topic" type="string" value="/ladybug5/camera$(arg camera)/image_color_rect" />
+	  	<param name="publish_topic" type="string" value="/ladybug5/camera$(arg camera)/image_color_rect_blur" />
+	  	<param name="filter"  type="int" value="2" />
+	  	<param name="kernel"  type="int" value="13" />
+	  </node>
+	  
+	  <node pkg="nodelet" type="nodelet" name="camera$(arg camera)_dilate" args="load image_cloud/Dilate $(arg nodelet_manager)" output="screen">
+	  	<param name="subscribe_topic" 	value="/ladybug5/camera$(arg camera)/image_color_rect_blur" />
+	  	<param name="publish_topic" 	value="/ladybug5/camera$(arg camera)/image_color_rect_blur_dilate" />
+	  </node>
+	  
+	  <node pkg="nodelet" type="nodelet" name="camera$(arg camera)_erode_first" args="load image_cloud/Erode $(arg nodelet_manager)" output="screen">
+	  	<param name="subscribe_topic" 	value="/ladybug5/camera$(arg camera)/image_color_rect_blur_dilate" />
+	  	<param name="publish_topic" 	value="/ladybug5/camera$(arg camera)/image_color_rect_blur_dilate_erode" />
+	  </node>
+	  
+	  <node pkg="nodelet" type="nodelet" name="camera$(arg camera)_image_enhancement_edge" args="load image_cloud/Edge_detector_nodelet $(arg nodelet_manager)" output="screen">
+		<param name="subscribe_topic" type="string" value="/ladybug5/camera$(arg camera)/image_color_rect_blur_dilate_erode" />
+		<param name="publish_topic" type="string" value="/ladybug5/camera$(arg camera)/image_color_rect_blur_dilate_erode_edge" />
+		<param name="kernel_size"  	  type="int" value="5" />
+		<param name="threshold1"  type="int" value="50" />
+		<param name="threshold2"  type="int" value="200" />
+		<param name="color"  	  type="bool" value="true" />
+	  </node>
+	  
+  </group>         
+</launch>

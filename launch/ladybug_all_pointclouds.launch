@@ -1,0 +1,54 @@
+<launch>
+	<!-- pointcloud creation -->
+	<arg name="subscribe_topic_pcl" 			default="/cloud_aggregator/filtered"/>
+   	<arg name="nodelet_manager" 				default="nodelet_manager"/>
+	
+	<include file="$(find start)/launch/process_camera_pointcloud.launch">
+   	 		<arg name="camera"						value="0" /> 		
+  			<arg name="subscribe_topic_pcl" 		value="$(arg subscribe_topic_pcl)" />
+   	 		<arg name="nodelet_manager" 			value="$(arg nodelet_manager)"/>
+   	 		<arg name="subscribe_topic_image"		value="/ladybug5/camera0/image_color_rect/selected" />
+  			<arg name="subscribe_topic_image_info" 	value="/ladybug5/camera0/image_color_rect/selected_info" />
+	</include>
+	
+	<include file="$(find start)/launch/process_camera_pointcloud.launch">
+   	 		<arg name="camera"					value="1" /> 		
+  			<arg name="subscribe_topic_pcl" 	value="$(arg subscribe_topic_pcl)" />
+   	 		<arg name="nodelet_manager" 		value="$(arg nodelet_manager)"/>
+   	 		<arg name="subscribe_topic_image"		value="/ladybug5/camera1/image_color_rect/selected" />
+  			<arg name="subscribe_topic_image_info" 	value="/ladybug5/camera1/image_color_rect/selected_info" />
+	</include>
+	
+	<include file="$(find start)/launch/process_camera_pointcloud.launch">
+   	 		<arg name="camera"					value="2" /> 		
+  			<arg name="subscribe_topic_pcl" 	value="$(arg subscribe_topic_pcl)" />
+   	 		<arg name="nodelet_manager" 		value="$(arg nodelet_manager)"/>
+   	 		<arg name="subscribe_topic_image"		value="/ladybug5/camera2/image_color_rect/selected" />
+  			<arg name="subscribe_topic_image_info" 	value="/ladybug5/camera2/image_color_rect/selected_info" />
+	</include>
+	
+	<include file="$(find start)/launch/process_camera_pointcloud.launch">
+   	 		<arg name="camera"					value="3" /> 		
+  			<arg name="subscribe_topic_pcl" 	value="$(arg subscribe_topic_pcl)" />
+   	 		<arg name="nodelet_manager" 		value="$(arg nodelet_manager)"/>
+   	 		<arg name="subscribe_topic_image"		value="/ladybug5/camera3/image_color_rect/selected" />
+  			<arg name="subscribe_topic_image_info" 	value="/ladybug5/camera3/image_color_rect/selected_info" />
+	</include>
+	
+	<include file="$(find start)/launch/process_camera_pointcloud.launch">
+   	 		<arg name="camera"					value="4" /> 		
+  			<arg name="subscribe_topic_pcl" 	value="$(arg subscribe_topic_pcl)" />
+   	 		<arg name="nodelet_manager" 		value="$(arg nodelet_manager)"/>
+   	 		<arg name="subscribe_topic_image"		value="/ladybug5/camera4/image_color_rect/selected" />
+  			<arg name="subscribe_topic_image_info" 	value="/ladybug5/camera4/image_color_rect/selected_info" />
+	</include>
+	
+	<include file="$(find start)/launch/process_camera_pointcloud.launch">
+   	 		<arg name="camera"					value="5" /> 		
+  			<arg name="subscribe_topic_pcl" 	value="$(arg subscribe_topic_pcl)" />
+   	 		<arg name="nodelet_manager" 		value="$(arg nodelet_manager)"/>
+   	 		<arg name="subscribe_topic_image"		value="/ladybug5/camera5/image_color_rect/selected" />
+  			<arg name="subscribe_topic_image_info" 	value="/ladybug5/camera5/image_color_rect/selected_info" />
+	</include>
+	
+</launch>

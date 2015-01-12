@@ -1,0 +1,101 @@
+<launch>
+  <arg name="camera" 						default="4" />
+  <arg name="subscribe_topic_pcl" 			default="/velodyne/cloud" />
+  <arg name="subscribe_topic_image"			default="/ladybug5/camera$(arg camera)/image_color_rect" />
+  <arg name="subscribe_topic_image_info" 	default="/ladybug5/camera$(arg camera)/image_color_rect_info" />
+  <arg name="image_tf_frame_id"				default="ladybug_camera$(arg camera)" />
+  <arg name="nodelet_manager" 				default="ladybug_nodelet" />
+  <arg name="point_size"					default="1" />
+  
+  <arg name="save"							default="true" />
+  <arg name="save_path" 					default="/home/fnolden/Bilder/exported/" />
+  
+  	  <include file="$(find image_cloud)/launch/pcl_to_image.launch" >
+  	  	<arg name="name"						value="pointcloud$(arg camera)_image" />
+  	  	<arg name="nodelet_manager"				value="$(arg nodelet_manager)" />
+  	  	<arg name="subscribe_topic_pcl"			value="$(arg subscribe_topic_pcl)" />
+  	  	<arg name="subscribe_topic_image_info"	value="$(arg subscribe_topic_image_info)" />
+		<arg name="publish_topic"				value="$(arg subscribe_topic_image)/point_cloud" />
+  	  	<arg name="image_tf_frame_id"			value="$(arg image_tf_frame_id)" />
+		<arg name="use_reference_frame"			value="0" />
+		<arg name="point_size"					value="$(arg point_size)" />
+		<arg name="reference_frame"				value="/odom" />
+  	  </include>
+	  
+	  <node pkg="nodelet" type="nodelet" name="pointcloud$(arg camera)_blur" args="load image_enhancement/Blur $(arg nodelet_manager)" output="screen">
+	  	<param name="subscribe_topic" 		type="string" value="$(arg subscribe_topic_image)/point_cloud" />
+	  	<param name="publish_topic" 		type="string" value="$(arg subscribe_topic_image)/point_cloud_blur" />
+	  	<param name="filter"  				type="int" value="2" />
+	  	<param name="kernel"  				type="int" value="13" />
+	  </node>
+	  
+	  <node pkg="nodelet" type="nodelet" name="pointcloud$(arg camera)_blur_dilate" args="load image_enhancement/Dilate $(arg nodelet_manager)" output="screen">
+	  	<param name="subscribe_topic" 	value="$(arg subscribe_topic_image)/point_cloud_blur" />
+	  	<param name="publish_topic" 	value="$(arg subscribe_topic_image)/point_cloud_blur_dilate" />
+	  </node>
+	  
+	  <node pkg="nodelet" type="nodelet" name="pointcloud$(arg camera)_blur_dilate_erode" args="load image_enhancement/Erode $(arg nodelet_manager)" output="screen">
+	  	<param name="subscribe_topic" 	value="$(arg subscribe_topic_image)/point_cloud_blur_dilate" />
+	  	<param name="publish_topic" 	value="$(arg subscribe_topic_image)/point_cloud_blur_dilate_erode" />
+	  </node>
+	  
+	  <node pkg="nodelet" type="nodelet" name="pointcloud$(arg camera)_blur_dilate_erode_edge" args="load image_cloud/Edge_detector_nodelet $(arg nodelet_manager)" output="screen">
+		<param name="subscribe_topic" 	type="string" value="$(arg subscribe_topic_image)/point_cloud_blur_dilate_erode" />
+		<param name="publish_topic" 	type="string" value="$(arg subscribe_topic_image)/point_cloud_blur_dilate_erode_edge" />
+		<param name="kernel_size"  	  	type="int" value="5" />
+		<param name="threshold1"  		type="int" value="50" />
+		<param name="threshold2"  		type="int" value="200" />
+		<param name="color"  	  		type="bool" value="false" />
+	  </node>
+	  
+	  <node pkg="nodelet" type="nodelet" name="pointcloud$(arg camera)_blur_dilate_edge" args="load image_cloud/Edge_detector_nodelet $(arg nodelet_manager)" output="screen">
+		<param name="subscribe_topic" 	type="string" value="$(arg subscribe_topic_image)/point_cloud_blur_dilate" />
+		<param name="publish_topic" 	type="string" value="$(arg subscribe_topic_image)/point_cloud_blur_dilate_edge" />
+		<param name="kernel_size"  	  	type="int" value="5" />
+		<param name="threshold1"  		type="int" value="50" />
+		<param name="threshold2"  		type="int" value="200" />
+		<param name="color"  	  		type="bool" value="false" />
+	  </node>
+	  
+	  <include if="$(arg save)" file="$(find fiddle)/launch/extract_image.launch">
+	  	<arg name="name" 	value="ex$(arg camera)_image_color_rect" />
+	  	<arg name="image" 	value="$(arg subscribe_topic_image)" />
+	  	<arg name="path"	value="$(arg save_path)" />
+	  </include>
+	  
+	  <include if="$(arg save)" file="$(find fiddle)/launch/extract_image.launch">
+	  	<arg name="name" 	value="ex$(arg camera)_point_cloud" />
+	  	<arg name="image" 	value="$(arg subscribe_topic_image)/point_cloud" />	  	
+	  	<arg name="path"	value="$(arg save_path)" />
+	  </include>
+	  
+	   <include if="$(arg save)" file="$(find fiddle)/launch/extract_image.launch">
+	  	<arg name="name" 	value="ex$(arg camera)_point_cloud_depth" />
+	  	<arg name="image" 	value="$(arg subscribe_topic_image)/point_cloud" />	  	
+	  	<arg name="path"	value="$(arg save_path)" />
+	  </include>
+	  
+	  <include if="$(arg save)" file="$(find fiddle)/launch/extract_image.launch">
+	  	<arg name="name" 	value="ex$(arg camera)_point_cloud_blur" />
+	  	<arg name="image" 	value="$(arg subscribe_topic_image)/point_cloud_blur" />	  	
+	  	<arg name="path"	value="$(arg save_path)" />
+	  </include>
+	  
+	  <include if="$(arg save)" file="$(find fiddle)/launch/extract_image.launch">
+	  	<arg name="name" 	value="ex$(arg camera)_point_cloud_blur_dilate" />
+	  	<arg name="image" 	value="$(arg subscribe_topic_image)/point_cloud_blur_dilate" />	  	
+	  	<arg name="path"	value="$(arg save_path)" />
+	  </include>
+	  
+	  <include if="$(arg save)" file="$(find fiddle)/launch/extract_image.launch">
+	  	<arg name="name" 	value="ex$(arg camera)_point_cloud_blur_dilate_edge" />
+	  	<arg name="image" 	value="$(arg subscribe_topic_image)/point_cloud_blur_dilate_edge" />
+	  	<arg name="path"	value="$(arg save_path)" />
+	  </include>
+	  
+	  <include if="$(arg save)" file="$(find fiddle)/launch/extract_image.launch">
+	  	<arg name="name" 	value="ex$(arg camera)_point_cloud_blur_dilate_erode_edge" />
+	  	<arg name="image" 	value="$(arg subscribe_topic_image)/point_cloud_blur_dilate_erode_edge" />
+	  	<arg name="path"	value="$(arg save_path)" />
+	  </include>
+</launch>

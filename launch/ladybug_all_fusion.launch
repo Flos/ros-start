@@ -1,0 +1,133 @@
+<launch>
+	<!-- Fusion node for Ladybug -->
+	<arg name="subscribe_topic_pcl" 			default="/cloud_aggregator/filtered"/>
+	<arg name="nodelet_manager" 				default="nodelet_manager"/>
+	<arg name="save"							default="0" />
+    <arg name="save_path" 						default="/home/fnolden/Bilder/exported/" />
+   	<arg name="reference_frame_id" 				default="/odom" />
+   	<arg name="postfix"							default="" />
+   	<arg name="preprocess_image"				default="1" />
+   	<arg name="gamma"							default="2.2" />
+   	<arg name="postfix_processed"				default="_blur_gamma" />
+	
+	<include file="$(find image_enhancement)/launch/blur_gamma.launch" if="$(arg preprocess_image)">
+			<arg name="image_topic_in"  	value="/ladybug5/camera0/image_color_rect$(arg postfix)" />
+			<arg name="image_topic_out"  	value="/ladybug5/camera0/image_color_rect$(arg postfix)_blur_gamma" />
+			<arg name="nodelet_manager" 	value="$(arg nodelet_manager)"/> 
+			<arg name="camera"				value="0" />
+			<arg name="gamma"				value="$(arg gamma)" />
+	</include>
+	
+	<include file="$(find image_cloud)/launch/fusion.launch">
+   	 		<arg name="nodelet_manager" 			value="$(arg nodelet_manager)"/> 		
+   	 		<arg name="camera"						value="0" /> 		
+  			<arg name="subscribe_topic_pcl" 		value="$(arg subscribe_topic_pcl)" />
+   	 		<arg name="subscribe_topic_image"		value="/ladybug5/camera0/image_color_rect$(arg postfix)"  							unless="$(arg preprocess_image)" />
+  			<arg name="subscribe_topic_image"		value="/ladybug5/camera0/image_color_rect$(arg postfix)$(arg postfix_processed)"  	if="$(arg preprocess_image)" />
+  			<arg name="subscribe_topic_image_info" 	value="/ladybug5/camera0/image_color_rect$(arg postfix)_info" />
+   	 		<arg name="reference_frame_id" 			value="$(arg reference_frame_id)" />
+   	 		<arg name="save"						value="$(arg save)" />	
+    		<arg name="save_path" 					value="$(arg save_path)" />
+	</include>
+	
+	<include file="$(find image_enhancement)/launch/blur_gamma.launch" if="$(arg preprocess_image)">
+			<arg name="image_topic_in"  	value="/ladybug5/camera1/image_color_rect$(arg postfix)" />
+			<arg name="image_topic_out"  	value="/ladybug5/camera1/image_color_rect$(arg postfix)$(arg postfix_processed)" />
+			<arg name="nodelet_manager" 	value="$(arg nodelet_manager)"/>
+			<arg name="camera"				value="1" />
+			<arg name="gamma"				value="$(arg gamma)" />
+	</include>
+	
+	<include file="$(find image_cloud)/launch/fusion.launch">
+   	 		<arg name="nodelet_manager" 			value="$(arg nodelet_manager)"/> 		
+   	 		<arg name="camera"						value="1" /> 		
+  			<arg name="subscribe_topic_pcl" 		value="$(arg subscribe_topic_pcl)" />
+   	 		<arg name="subscribe_topic_image"		value="/ladybug5/camera1/image_color_rect$(arg postfix)"  							unless="$(arg preprocess_image)" />
+  			<arg name="subscribe_topic_image"		value="/ladybug5/camera1/image_color_rect$(arg postfix)$(arg postfix_processed)"  	if="$(arg preprocess_image)" />
+  			<arg name="subscribe_topic_image_info" 	value="/ladybug5/camera1/image_color_rect$(arg postfix)_info" />
+   	 		<arg name="reference_frame_id" 			value="$(arg reference_frame_id)" />
+   	 		<arg name="save"						value="$(arg save)" />	
+    		<arg name="save_path" 					value="$(arg save_path)" />
+	</include>
+	
+	<include file="$(find image_enhancement)/launch/blur_gamma.launch" if="$(arg preprocess_image)">
+			<arg name="image_topic_in"  	value="/ladybug5/camera2/image_color_rect$(arg postfix)" />
+			<arg name="image_topic_out"  	value="/ladybug5/camera2/image_color_rect$(arg postfix)$(arg postfix_processed)" />
+			<arg name="nodelet_manager" 	value="$(arg nodelet_manager)"/> 
+			<arg name="camera"				value="2" />
+			<arg name="gamma"				value="$(arg gamma)" />
+	</include>
+	
+	<include file="$(find image_cloud)/launch/fusion.launch">
+   	 		<arg name="nodelet_manager" 			value="$(arg nodelet_manager)"/> 		
+   	 		<arg name="camera"						value="2" /> 		
+  			<arg name="subscribe_topic_pcl" 		value="$(arg subscribe_topic_pcl)" />
+   	 		<arg name="subscribe_topic_image"		value="/ladybug5/camera2/image_color_rect$(arg postfix)"  							unless="$(arg preprocess_image)" />
+  			<arg name="subscribe_topic_image"		value="/ladybug5/camera2/image_color_rect$(arg postfix)$(arg postfix_processed)"  	if="$(arg preprocess_image)" />
+  			<arg name="subscribe_topic_image_info" 	value="/ladybug5/camera2/image_color_rect$(arg postfix)_info" />
+   	 		<arg name="reference_frame_id" 			value="$(arg reference_frame_id)" />
+   	 		<arg name="save"						value="$(arg save)" />	
+    		<arg name="save_path" 					value="$(arg save_path)" />
+	</include>
+	
+	<include file="$(find image_enhancement)/launch/blur_gamma.launch" if="$(arg preprocess_image)">
+			<arg name="image_topic_in"  	value="/ladybug5/camera3/image_color_rect$(arg postfix)" />
+			<arg name="image_topic_out"  	value="/ladybug5/camera3/image_color_rect$(arg postfix)$(arg postfix_processed)" />
+			<arg name="nodelet_manager" 	value="$(arg nodelet_manager)"/> 
+			<arg name="camera"				value="3" />
+			<arg name="gamma"				value="$(arg gamma)" />
+	</include>
+	
+	<include file="$(find image_cloud)/launch/fusion.launch">
+   	 		<arg name="nodelet_manager" 			value="$(arg nodelet_manager)"/> 		
+   	 		<arg name="camera"						value="3" /> 		
+  			<arg name="subscribe_topic_pcl" 		value="$(arg subscribe_topic_pcl)" />
+   	 		<arg name="subscribe_topic_image"		value="/ladybug5/camera3/image_color_rect$(arg postfix)"  							unless="$(arg preprocess_image)" />
+  			<arg name="subscribe_topic_image"		value="/ladybug5/camera3/image_color_rect$(arg postfix)$(arg postfix_processed)"  	if="$(arg preprocess_image)" />
+  			<arg name="subscribe_topic_image_info" 	value="/ladybug5/camera3/image_color_rect$(arg postfix)_info" />
+   	 		<arg name="reference_frame_id" 			value="$(arg reference_frame_id)" />
+   	 		<arg name="save"						value="$(arg save)" />	
+    		<arg name="save_path" 					value="$(arg save_path)" />
+	</include>
+	
+	<include file="$(find image_enhancement)/launch/blur_gamma.launch" if="$(arg preprocess_image)">
+			<arg name="image_topic_in"  	value="/ladybug5/camera4/image_color_rect$(arg postfix)" />
+			<arg name="image_topic_out"  	value="/ladybug5/camera4/image_color_rect$(arg postfix)$(arg postfix_processed)" />
+			<arg name="nodelet_manager" 	value="$(arg nodelet_manager)"/> 
+			<arg name="camera"				value="4" />
+			<arg name="gamma"				value="$(arg gamma)" />
+	</include>
+	
+	<include file="$(find image_cloud)/launch/fusion.launch">
+   	 		<arg name="nodelet_manager" 			value="$(arg nodelet_manager)"/> 		
+   	 		<arg name="camera"						value="4" /> 		
+  			<arg name="subscribe_topic_pcl" 		value="$(arg subscribe_topic_pcl)" />
+   	 		<arg name="subscribe_topic_image"		value="/ladybug5/camera4/image_color_rect$(arg postfix)"  							unless="$(arg preprocess_image)" />
+  			<arg name="subscribe_topic_image"		value="/ladybug5/camera4/image_color_rect$(arg postfix)$(arg postfix_processed)"  	if="$(arg preprocess_image)" />
+  			<arg name="subscribe_topic_image_info" 	value="/ladybug5/camera4/image_color_rect$(arg postfix)_info" />
+   	 		<arg name="reference_frame_id" 			value="$(arg reference_frame_id)" />
+   	 		<arg name="save"						value="$(arg save)" />	
+    		<arg name="save_path" 					value="$(arg save_path)" />
+	</include>
+	
+	<include file="$(find image_enhancement)/launch/blur_gamma.launch" if="$(arg preprocess_image)">
+			<arg name="image_topic_in"  	value="/ladybug5/camera5/image_color_rect$(arg postfix)" />
+			<arg name="image_topic_out"  	value="/ladybug5/camera5/image_color_rect$(arg postfix)$(arg postfix_processed)" />
+			<arg name="nodelet_manager" 	value="$(arg nodelet_manager)"/> 
+			<arg name="camera"				value="5" />
+			<arg name="gamma"				value="$(arg gamma)" />
+	</include>
+	
+	<include file="$(find image_cloud)/launch/fusion.launch">
+   	 		<arg name="nodelet_manager" 			value="$(arg nodelet_manager)"/> 		
+   	 		<arg name="camera"						value="5" /> 		
+  			<arg name="subscribe_topic_pcl" 		value="$(arg subscribe_topic_pcl)" />
+   	 		<arg name="subscribe_topic_image"		value="/ladybug5/camera5/image_color_rect$(arg postfix)"  							unless="$(arg preprocess_image)" />
+  			<arg name="subscribe_topic_image"		value="/ladybug5/camera5/image_color_rect$(arg postfix)$(arg postfix_processed)"  	if="$(arg preprocess_image)" />
+  			<arg name="subscribe_topic_image_info" 	value="/ladybug5/camera5/image_color_rect$(arg postfix)_info" />
+   	 		<arg name="reference_frame_id" 			value="$(arg reference_frame_id)" />
+   	 		<arg name="save"						value="$(arg save)" />	
+    		<arg name="save_path" 					value="$(arg save_path)" />
+	</include>
+		
+</launch>

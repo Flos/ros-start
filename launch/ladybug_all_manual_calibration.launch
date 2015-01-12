@@ -1,0 +1,39 @@
+<launch>
+	<!-- Calibration -->
+    <include file="$(find tf2_dynamic)/launch/tf2_dynamic.launch">
+    	<arg name="name" 		 value="manual_calibration0"/>
+    	<arg name="parent_frame" value="ladybug_camera0"/>
+    	<arg name="child_frame"  value="ladybug_camera0_calibrated"/>
+    </include>
+    
+    <include file="$(find tf2_dynamic)/launch/tf2_dynamic.launch">
+    	<arg name="name" 		 value="manual_calibration1"/>
+    	<arg name="parent_frame" value="ladybug_camera1"/>
+    	<arg name="child_frame"  value="ladybug_camera1_calibrated"/>
+    </include>
+    
+    <include file="$(find tf2_dynamic)/launch/tf2_dynamic.launch">
+    	<arg name="name" 		 value="manual_calibration2"/>
+    	<arg name="parent_frame" value="ladybug_camera2"/>
+    	<arg name="child_frame"  value="ladybug_camera2_calibrated"/>
+    </include>
+    
+    <include file="$(find tf2_dynamic)/launch/tf2_dynamic.launch">
+    	<arg name="name" 		 value="manual_calibration3"/>
+    	<arg name="parent_frame" value="ladybug_camera3"/>
+    	<arg name="child_frame"  value="ladybug_camera3_calibrated"/>
+    </include>
+    
+    <include file="$(find tf2_dynamic)/launch/tf2_dynamic.launch">
+    	<arg name="name" 		 value="manual_calibration4"/>
+    	<arg name="parent_frame" value="ladybug_camera4"/>
+    	<arg name="child_frame"  value="ladybug_camera4_calibrated"/>
+    </include>
+    
+    <include file="$(find tf2_dynamic)/launch/tf2_dynamic.launch">
+    	<arg name="name" 		 value="manual_calibration5"/>
+    	<arg name="parent_frame" value="ladybug_camera5"/>
+    	<arg name="child_frame"  value="ladybug_camera5_calibrated"/>
+    </include>
+	
+</launch>
