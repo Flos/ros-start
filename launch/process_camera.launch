@@ -7,7 +7,7 @@
 	   <node pkg="nodelet" type="nodelet" name="camera$(arg camera)_Rectifier_nodelet" args="load ladybug/Rectifier_nodelet $(arg nodelet_manager)" output="screen">
 	  	<param name="sub" 	value="/ladybug5/camera$(arg camera)/image_raw" />
 	  	<param name="pub" 	value="/ladybug5/camera$(arg camera)/image_color_rect" />
-	  	<param name="sub_info" 	value="/ladybug5/camera$(arg camera)/camera_info" />
+	  	<param name="sub_info" 	value="/ladybug5/camera$(arg camera)/image_raw_info" />
 	  	<param name="lut" 	value="$(find ladybug)/calibration/13122828_camera$(arg camera)_h1024_w1224_map_" />
 	  	<param name="zoom" 	value="2.2" />
 	  </node>

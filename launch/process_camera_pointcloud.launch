@@ -3,11 +3,13 @@
   <arg name="subscribe_topic_pcl" 			default="/velodyne/cloud" />
   <arg name="subscribe_topic_image"			default="/ladybug5/camera$(arg camera)/image_color_rect" />
   <arg name="subscribe_topic_image_info" 	default="/ladybug5/camera$(arg camera)/image_color_rect_info" />
-  <arg name="image_tf_frame_id"				default="ladybug_camera$(arg camera)" />
+  <arg name="image_tf_frame_id"				default="" />
   <arg name="nodelet_manager" 				default="ladybug_nodelet" />
   <arg name="point_size"					default="1" />
+  <arg name="feature"						default="0" />
   
   <arg name="save"							default="true" />
+  <arg name="save_rect"						default="false" />
   <arg name="save_path" 					default="/home/fnolden/Bilder/exported/" />
   
   	  <include file="$(find image_cloud)/launch/pcl_to_image.launch" >
@@ -16,10 +18,14 @@
   	  	<arg name="subscribe_topic_pcl"			value="$(arg subscribe_topic_pcl)" />
   	  	<arg name="subscribe_topic_image_info"	value="$(arg subscribe_topic_image_info)" />
 		<arg name="publish_topic"				value="$(arg subscribe_topic_image)/point_cloud" />
+		<arg name="publish_topic_pcl"			value="$(arg subscribe_topic_image)/filter" />
   	  	<arg name="image_tf_frame_id"			value="$(arg image_tf_frame_id)" />
 		<arg name="use_reference_frame"			value="0" />
 		<arg name="point_size"					value="$(arg point_size)" />
 		<arg name="reference_frame"				value="/odom" />
+		<arg name="feature"						value="$(arg feature)" />
+		<arg name="save"						value="$(arg save)"	/>
+		<arg name="save_path"					value="$(arg save_path)" />
   	  </include>
 	  
 	  <node pkg="nodelet" type="nodelet" name="pointcloud$(arg camera)_blur" args="load image_enhancement/Blur $(arg nodelet_manager)" output="screen">
@@ -57,7 +63,7 @@
 		<param name="color"  	  		type="bool" value="false" />
 	  </node>
 	  
-	  <include if="$(arg save)" file="$(find fiddle)/launch/extract_image.launch">
+	  <include if="$(arg save_rect)" file="$(find fiddle)/launch/extract_image.launch">
 	  	<arg name="name" 	value="ex$(arg camera)_image_color_rect" />
 	  	<arg name="image" 	value="$(arg subscribe_topic_image)" />
 	  	<arg name="path"	value="$(arg save_path)" />
@@ -71,7 +77,7 @@
 	  
 	   <include if="$(arg save)" file="$(find fiddle)/launch/extract_image.launch">
 	  	<arg name="name" 	value="ex$(arg camera)_point_cloud_depth" />
-	  	<arg name="image" 	value="$(arg subscribe_topic_image)/point_cloud" />	  	
+	  	<arg name="image" 	value="$(arg subscribe_topic_image)/point_cloud_depth" />	  	
 	  	<arg name="path"	value="$(arg save_path)" />
 	  </include>
 	  

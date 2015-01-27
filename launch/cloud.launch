@@ -6,7 +6,7 @@
   
 	<node pkg="nodelet" type="nodelet" name="pcl_to_image_cloud" args="load image_cloud/Pcl_to_image_nodelet nodelet_manager" output="screen">
 	  	<param name="sub_pcl" type="string" value="/cloud_aggregator/filtered" />
-	  	<param name="sub_img_info" type="string" value="/ladybug5/camera4/camera_info" />
+	  	<param name="sub_img_info" type="string" value="/ladybug5/camera4/image_raw_info" />
 	  	<param name="image_frame_id"  type="string" value="ladybug_camera4" />
 	  	<param name="resize_x"  type="double" value="1" />
 	  	<param name="resize_y"  type="double" value="1" />
